@@ -1,7 +1,6 @@
 'use strict';
 
 const { assert } = require('chai');
-const sqlite3 = require('sqlite3');
 
 const Employee = require('../../models/employee');
 let employee = {};
@@ -187,6 +186,21 @@ describe('Employee', function () {
       employees.forEach(employee => assert.instanceOf(employee, Employee));
     });
 
+  });
+
+  describe('.get()', function () {
+
+    beforeEach('populute the employee table', function (done) {
+      seed.seedEmployeeDatabase(done);
+    });
+
+    beforeEach('get the employee', async function () {
+      employee = await Employee.get(1);
+    });
+
+    it('returns an Employee object', function () {
+      assert.instanceOf(employee, Employee);
+    });
   });
 
 });
