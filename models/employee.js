@@ -107,3 +107,13 @@ module.exports = class Employee {
     return _isCurrentEmployee.get(this);
   }
 
+  toJSON() {
+    return {
+      id: this.employeeId,
+      name: this.name,
+      position: this.position,
+      wage: this.wage,
+      isCurrentEmployee: this.isCurrentEmployee
+    };
+  }
+};
