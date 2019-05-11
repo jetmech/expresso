@@ -5,6 +5,7 @@ const sqlite3 = require('sqlite3');
 
 const Employee = require('../../models/employee');
 let employee = {};
+let employees = [];
 
 const seed = require('./../seed');
 
@@ -147,7 +148,7 @@ describe('Employee', function () {
       let nonNumber = 'Hello, I am not a number...';
       function shouldThrow() {
         employee.isCurrentEmployee = nonNumber;
-      };
+      }
       assert.throws(shouldThrow);
     });
 
@@ -167,6 +168,28 @@ describe('Employee', function () {
     });
 
   });
+
+  describe('.getCurrentlyEmployed()', function () {
+
+    beforeEach('populute the employee table', function (done) {
+      seed.seedEmployeeDatabase(done);
+    });
+
+    beforeEach('get the employees', async function () {
+      employees = await Employee.getCurrentlyEmployed();
+    });
+
+    it('retrurns an array', async function () {
+      assert.isArray(employees);
+    });
+
+    it('each element is an Employee object', async function () {
+      employees.forEach(employee => assert.instanceOf(employee, Employee));
+    });
+
+  });
+
+});
 
 function createEmployee() {
   return new Employee(employeeTemplate);
