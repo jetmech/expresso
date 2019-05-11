@@ -15,12 +15,12 @@ const db = new sqlite3.Database(dbPath, (err) => {
 });
 
 module.exports = class Employee {
-  constructor({ employeeId, name, position, wage, isCurrentEmployee }) {
-    this.employeeId = employeeId;
+  constructor({ employeeId, id, name, position, wage, isCurrentEmployee, is_current_employee }) {
+    this.employeeId = employeeId || id;
     this.name = name;
     this.position = position;
     this.wage = wage;
-    this.isCurrentEmployee = isCurrentEmployee || 1;
+    this.isCurrentEmployee = isCurrentEmployee || is_current_employee || 1;
   }
 
   set employeeId(id) {
