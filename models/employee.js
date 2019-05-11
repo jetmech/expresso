@@ -107,6 +107,22 @@ module.exports = class Employee {
     return _isCurrentEmployee.get(this);
   }
 
+  static getCurrentlyEmployed() {
+    return new Promise((resolve, reject) => {
+      db.all(`SELECT *
+      FROM Employee
+      WHERE is_current_employee = 1;`, (err, row) => {
+        if (err) {
+          return reject(err);
+        } else {
+          let result = [];
+          row.forEach(employee => result.push(new Employee(employee)));
+          return resolve(result);
+        }
+      });
+    });
+  }
+
   toJSON() {
     return {
       id: this.employeeId,
