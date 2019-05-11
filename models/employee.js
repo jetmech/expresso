@@ -123,6 +123,27 @@ module.exports = class Employee {
     });
   }
 
+  static get(employeeId) {
+    return new Promise((resolve, reject) => {
+      db.get('SELECT * FROM Employee WHERE id = $employeeId;', {
+        $employeeId: employeeId
+      }, function (err, row) {
+        if (err) {
+          return reject(err);
+        } else if (row) {
+          try {
+            let employee = new Employee(row);
+            return resolve(employee);
+          } catch (err) {
+            return reject(err);
+          }
+        } else {
+          return resolve({});
+        }
+      });
+    });
+  }
+
   toJSON() {
     return {
       id: this.employeeId,
