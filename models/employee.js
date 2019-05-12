@@ -144,6 +144,30 @@ module.exports = class Employee {
     });
   }
 
+  create() {
+    return new Promise((resolve, reject) => {
+      db.run(`INSERT INTO Employee (
+        name,
+        position,
+        wage)
+      VALUES (
+        $name,
+        $position,
+        $wage
+      )`, {
+        $name: this.name,
+        $position: this.position,
+        $wage: this.wage
+      }, function(err) {
+        if (err) {
+          return reject(err);
+        } else {
+          resolve(this.lastID);
+        }
+      });
+    }).then((id) => Employee.get(id), (err) => Promise.reject(err));
+  }
+
   toJSON() {
     return {
       id: this.employeeId,
