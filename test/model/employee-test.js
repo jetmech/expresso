@@ -1,6 +1,7 @@
 'use strict';
 
 const { assert } = require('chai');
+const sqlite3 = require('sqlite3');
 
 const Employee = require('../../models/employee');
 let employee = {};
@@ -16,7 +17,7 @@ const employeeTemplate = {
   isCurrentEmployee: 0
 };
 
-// const testDb = new sqlite3.Database(process.env.TEST_DATABASE);
+const testDb = new sqlite3.Database(process.env.TEST_DATABASE);
 
 describe('Employee', function () {
 
@@ -201,6 +202,46 @@ describe('Employee', function () {
     it('returns an Employee object', function () {
       assert.instanceOf(employee, Employee);
     });
+  });
+
+  describe('#create()', function () {
+
+    let newEmployee;
+
+    beforeEach('populute the employee table', function (done) {
+      seed.seedEmployeeDatabase(done);
+    });
+
+    beforeEach('Create an instance of Employee', function () {
+      employee = createEmployee();
+    });
+
+    beforeEach('Add the employee to the database', async function () {
+      newEmployee = await employee.create();
+    });
+
+    it('adds the employee to the database', function (done) {
+
+      testDb.get(`SELECT *
+      FROM Employee
+      WHERE id = $employeeId;`, {
+        $employeeId: newEmployee.employeeId
+      }, function (err, row) {
+        if (err) {
+          done(err);
+        } else if (row) {
+          assert.equal(newEmployee.employeeId, row.id);
+          done();
+        } else {
+          assert.fail();
+        }
+      });
+    });
+
+    it('returns an employee object after a successful creation', function () {
+      assert.instanceOf(newEmployee, Employee);
+    });
+
   });
 
 });
