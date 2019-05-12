@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "mocha",
-    "postinstall": "node migration.js"
+    "postinstall": "node migration.js",
+    "test-model": "env TEST_DATABASE=./test/test.sqlite mocha ./test/model/*test.js"
   },
   "author": "",
   "license": "ISC",
