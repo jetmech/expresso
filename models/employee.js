@@ -96,7 +96,7 @@ module.exports = class Employee {
       throw TypeError('isCurrentEmployee must be an integer');
     }
 
-    if (isCurrentEmployee && Number.isInteger(isCurrentEmployee)) {
+    if (typeof isCurrentEmployee !== 'undefined' && (Number.isInteger(isCurrentEmployee) || isCurrentEmployee === 0)) {
       _isCurrentEmployee.set(this, isCurrentEmployee);
     } else {
       throw TypeError('isCurrentEmployee must be an integer');
@@ -202,6 +202,25 @@ module.exports = class Employee {
     });
 
     return updatePromise.then((id) => Employee.get(id), (err) => Promise.reject(err));
+  }
+
+  delete() {
+    return new Promise((resolve, reject) => {
+      db.run(`UPDATE Employee
+      SET 
+        is_current_employee = 0
+      WHERE id = $employeeId;`, {
+        $employeeId: this.employeeId,
+      }, (err) => {
+        if (err) {
+          return reject(err);
+        } else {
+          this.isCurrentEmployee = 0;
+          return resolve(this);
+        }
+      });
+    });
+
   }
 
   toJSON() {
