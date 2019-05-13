@@ -168,6 +168,42 @@ module.exports = class Employee {
     }).then((id) => Employee.get(id), (err) => Promise.reject(err));
   }
 
+  update(newPropertyValues) {
+    const updatePromise = new Promise((resolve, reject) => {
+
+      // This will validate the request body values using existing class logic.
+      try {
+        this.name = newPropertyValues.name;
+        this.position = newPropertyValues.position;
+        this.wage = newPropertyValues.wage;
+      } catch (err) {
+        return reject(err);
+      }
+
+      db.run(`UPDATE Employee
+        SET 
+          name = $name,
+          position = $position,
+          wage = $wage,
+          is_current_employee = $isCurrentEmployee
+        WHERE id = $employeeId;`, {
+        $employeeId: this.employeeId,
+        $name: this.name,
+        $position: this.position,
+        $wage: this.wage,
+        $isCurrentEmployee: this.isCurrentEmployee
+      }, (err) => {
+        if (err) {
+          return reject(err);
+        } else {
+          return resolve(this.employeeId);
+        }
+      });
+    });
+
+    return updatePromise.then((id) => Employee.get(id), (err) => Promise.reject(err));
+  }
+
   toJSON() {
     return {
       id: this.employeeId,
