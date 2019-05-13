@@ -261,6 +261,63 @@ describe('Employee', function () {
 
   });
 
+  describe('#update()', function () {
+
+    let updatedEmployee;
+    let updatedProperties = {
+      name: 'Updated Employee',
+      position: 'Updated Position',
+      wage: 35
+    };
+
+    beforeEach('populute the employee table', function (done) {
+      seed.seedEmployeeDatabase(done);
+    });
+
+    beforeEach('Get an Employee from the database', async function () {
+      employee = await Employee.get(1);
+    });
+
+    beforeEach('Update the employee', async function () {
+      updatedEmployee = await employee.update(updatedProperties);
+    });
+
+    it('updates the employee in the database', function (done) {
+
+      testDb.get(`SELECT *
+      FROM Employee
+      WHERE id = $employeeId;`, {
+        $employeeId: updatedEmployee.employeeId
+      }, function (err, row) {
+        if (err) {
+          done(err);
+        } else if (row) {
+          assert.strictEqual(row.id, 1);
+          assert.strictEqual(row.name, 'Updated Employee');
+          assert.strictEqual(row.position, 'Updated Position');
+          assert.strictEqual(row.wage, 35);
+          assert.strictEqual(row.is_current_employee, 1);
+          done();
+        } else {
+          assert.fail();
+        }
+      });
+    });
+
+    it('returns an employee object after a successful update', function () {
+      assert.instanceOf(updatedEmployee, Employee);
+    });
+
+    it('the returned object has the correct property values', function () {
+      assert.deepPropertyVal(updatedEmployee, 'employeeId', 1);
+      assert.deepPropertyVal(updatedEmployee, 'name', 'Updated Employee');
+      assert.deepPropertyVal(updatedEmployee, 'position', 'Updated Position');
+      assert.deepPropertyVal(updatedEmployee, 'wage', 35);
+      assert.deepPropertyVal(updatedEmployee, 'isCurrentEmployee', 1);
+    });
+
+  });
+
 });
 
 function createEmployee() {
