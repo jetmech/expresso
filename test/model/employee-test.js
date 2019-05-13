@@ -160,6 +160,13 @@ describe('Employee', function () {
       assert.throws(shouldThrow);
     });
 
+    it('can be zero', function () {
+      function shouldNotThrow() {
+        employee.isCurrentEmployee = 0;
+      }
+      assert.doesNotThrow(shouldNotThrow);
+    });
+
     it('defaults to a vlaue of 1', function () {
       let modifiedEmployee = Object.assign({}, employeeTemplate);
       delete modifiedEmployee.isCurrentEmployee;
@@ -314,6 +321,58 @@ describe('Employee', function () {
       assert.deepPropertyVal(updatedEmployee, 'position', 'Updated Position');
       assert.deepPropertyVal(updatedEmployee, 'wage', 35);
       assert.deepPropertyVal(updatedEmployee, 'isCurrentEmployee', 1);
+    });
+
+  });
+
+  describe('#delete()', function () {
+
+    let deletedEmployee;
+
+    beforeEach('populute the employee table', function (done) {
+      seed.seedEmployeeDatabase(done);
+    });
+
+    beforeEach('Get an Employee from the database', async function () {
+      employee = await Employee.get(1);
+    });
+
+    beforeEach('Delete the employee', async function () {
+      deletedEmployee = await employee.delete();
+    });
+
+    it('sets the value of "is_current_employee" to 0', function (done) {
+
+      testDb.get(`SELECT *
+      FROM Employee
+      WHERE id = $employeeId;`, {
+        $employeeId: deletedEmployee.employeeId
+      }, function (err, row) {
+        if (err) {
+          done(err);
+        } else if (row) {
+          assert.strictEqual(row.id, 1);
+          assert.strictEqual(row.name, 'Employee 1');
+          assert.strictEqual(row.position, 'Manager');
+          assert.strictEqual(row.wage, 10);
+          assert.strictEqual(row.is_current_employee, 0);
+          done();
+        } else {
+          assert.fail();
+        }
+      });
+    });
+
+    it('returns an employee object after a successful update', function () {
+      assert.instanceOf(deletedEmployee, Employee);
+    });
+
+    it('the returned object has the correct property values', function () {
+      assert.deepPropertyVal(deletedEmployee, 'employeeId', 1);
+      assert.deepPropertyVal(deletedEmployee, 'name', 'Employee 1');
+      assert.deepPropertyVal(deletedEmployee, 'position', 'Manager');
+      assert.deepPropertyVal(deletedEmployee, 'wage', 10);
+      assert.deepPropertyVal(deletedEmployee, 'isCurrentEmployee', 0);
     });
 
   });
