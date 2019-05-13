@@ -202,6 +202,15 @@ describe('Employee', function () {
     it('returns an Employee object', function () {
       assert.instanceOf(employee, Employee);
     });
+
+    it('the returned object has the correct property values', function () {
+      assert.deepPropertyVal(employee, 'employeeId', 1);
+      assert.deepPropertyVal(employee, 'name', 'Employee 1');
+      assert.deepPropertyVal(employee, 'position', 'Manager');
+      assert.deepPropertyVal(employee, 'wage', 10);
+      assert.deepPropertyVal(employee, 'isCurrentEmployee', 1);
+    });
+
   });
 
   describe('#create()', function () {
