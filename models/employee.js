@@ -174,7 +174,7 @@ module.exports = class Employee {
       name: this.name,
       position: this.position,
       wage: this.wage,
-      isCurrentEmployee: this.isCurrentEmployee
+      is_current_employee: this.isCurrentEmployee
     };
   }
 };
