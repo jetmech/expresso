@@ -21,4 +21,17 @@ router.post('/', async (req, res, next) => {
   }
 });
 
+router.get('/:employeeId', async (req, res, next) => {
+  try {
+    const employee = await Employee.get(req.params.employeeId);
+    return res.send({employee: employee});
+  } catch (err) {
+    if(err.message === 'Employee not found') {
+      return res.status(404).send();
+    } else {
+      res.status(400).send();
+    }
+  }
+});
+
 module.exports = router;
