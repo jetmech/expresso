@@ -251,6 +251,14 @@ describe('Employee', function () {
       assert.instanceOf(newEmployee, Employee);
     });
 
+    it('the returned object has the correct property values', function () {
+      assert.deepPropertyVal(newEmployee, 'employeeId', 4);
+      assert.deepPropertyVal(newEmployee, 'name', 'New Employee');
+      assert.deepPropertyVal(newEmployee, 'position', 'Position');
+      assert.deepPropertyVal(newEmployee, 'wage', 30);
+      assert.deepPropertyVal(newEmployee, 'isCurrentEmployee', 1);
+    });
+
   });
 
 });
