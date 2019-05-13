@@ -1190,3 +1190,5 @@ describe('DELETE /api/menus/:menuId/menu-items/:menuItemId', function() {
       .expect(404);
   });
 });
+
+app.close();
