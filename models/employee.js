@@ -138,7 +138,7 @@ module.exports = class Employee {
             return reject(err);
           }
         } else {
-          return resolve({});
+          return reject(new RangeError('Employee not found'));
         }
       });
     });
@@ -158,7 +158,7 @@ module.exports = class Employee {
         $name: this.name,
         $position: this.position,
         $wage: this.wage
-      }, function(err) {
+      }, function (err) {
         if (err) {
           return reject(err);
         } else {
