@@ -24,14 +24,29 @@ router.post('/', async (req, res, next) => {
 router.get('/:employeeId', async (req, res, next) => {
   try {
     const employee = await Employee.get(req.params.employeeId);
-    return res.send({employee: employee});
+    return res.send({ employee: employee });
   } catch (err) {
-    if(err.message === 'Employee not found') {
+    if (err.message === 'Employee not found') {
       return res.status(404).send();
     } else {
       res.status(400).send();
     }
   }
 });
+
+router.put('/:employeeId', async (req, res, next) => {
+  try {
+    const employee = await Employee.get(req.params.employeeId);
+    const updatedEmployee = await employee.update(req.body.employee);
+    return res.send({ employee: updatedEmployee });
+  } catch (err) {
+    if (err.message === 'Employee not found') {
+      return res.status(404).send();
+    } else {
+      return res.status(400).send();
+    }
+  }
+});
+
 
 module.exports = router;
