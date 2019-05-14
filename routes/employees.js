@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 const express = require('express');
 const Employee = require('../models/employee');
+const timesheetRouter = require('./timesheets');
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
@@ -61,5 +62,7 @@ router.delete('/:employeeId', async (req, res, next) => {
     }
   }
 });
+
+router.use('/:employeeId/timesheets/', timesheetRouter);
 
 module.exports = router;
