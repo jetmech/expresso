@@ -4,9 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "mocha",
+    "test": "env TEST_DATABASE=./test/test.sqlite mocha --recursive",
     "postinstall": "node migration.js",
-    "test-model": "env TEST_DATABASE=./test/test.sqlite mocha ./test/model/*test.js"
+    "test-model": "env TEST_DATABASE=./test/test.sqlite mocha ./test/model/*-test.js"
   },
   "author": "",
   "license": "ISC",
