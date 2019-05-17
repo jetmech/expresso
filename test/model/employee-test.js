@@ -2,6 +2,7 @@
 
 const { assert } = require('chai');
 const sqlite3 = require('sqlite3');
+const { dbPath } = require('../../config');
 
 const Employee = require('../../models/employee');
 let employee = {};
@@ -17,7 +18,7 @@ const employeeTemplate = {
   isCurrentEmployee: 0
 };
 
-const testDb = new sqlite3.Database(process.env.TEST_DATABASE);
+const testDb = new sqlite3.Database(dbPath);
 
 describe('Employee', function () {
 

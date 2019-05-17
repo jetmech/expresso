@@ -1,7 +1,7 @@
-const path = require('path');
+const databasePath = 'database.sqlite';
+const testDatabasePath = './test/test.sqlite';
 
-const databaseFileName = 'database.sqlite';
-const dbPath = process.env.TEST_DATABASE || path.join(__dirname, databaseFileName);
+const dbPath = (process.env.NODE_ENV == 'production') ? databasePath : testDatabasePath;
 
 module.exports = {
   dbPath: dbPath

@@ -367,8 +367,8 @@ describe('POST /api/employees', function() {
     };
   });
 
-  it('should create a valid employee', function() {
-    return request(app)
+  it('should create a valid employee', function(done) {
+    request(app)
       .post('/api/employees/')
       .send({employee: newEmployee})
       .then(function() {
@@ -378,6 +378,7 @@ describe('POST /api/employees', function() {
           expect(employee.id).to.exist;
           expect(employee.position).to.equal(newEmployee.position);
           expect(employee.wage).to.equal(newEmployee.wage);
+          done();
         });
       });
   });
@@ -580,8 +581,8 @@ describe('POST /api/employees/:employeeId/timesheets', function() {
     seed.seedTimesheetDatabase(done);
   });
 
-  it('should create a valid timesheet', function() {
-    return request(app)
+  it('should create a valid timesheet', function(done) {
+    request(app)
       .post('/api/employees/2/timesheets')
       .send({timesheet: newTimesheet})
       .then(function() {
@@ -593,6 +594,7 @@ describe('POST /api/employees/:employeeId/timesheets', function() {
           expect(timesheet.rate).to.equal(newTimesheet.rate);
           expect(timesheet.date).to.equal(newTimesheet.date);
           expect(timesheet.employee_id).to.equal(2);
+          done();
         });
       });
   });
@@ -827,8 +829,8 @@ describe('POST /api/menus', function() {
     seed.seedMenuDatabase(done);
   });
 
-  it('should create a valid menu', function() {
-    return request(app)
+  it('should create a valid menu', function(done) {
+    request(app)
       .post('/api/menus/')
       .send({menu: newMenu})
       .then(function() {
@@ -837,6 +839,7 @@ describe('POST /api/menus', function() {
           expect(menu).to.exist;
           expect(menu.id).to.exist;
           expect(menu.title).to.equal(newMenu.title);
+          done();
         });
       });
   });
@@ -1021,8 +1024,8 @@ describe('POST /api/menus/:menuId/menu-items', function() {
     seed.seedMenuItemDatabase(done);
   });
 
-  it('should create a valid menuItem', function() {
-    return request(app)
+  it('should create a valid menuItem', function(done) {
+    request(app)
       .post('/api/menus/2/menu-items')
       .send({menuItem: newMenuItem})
       .then(function() {
@@ -1035,6 +1038,7 @@ describe('POST /api/menus/:menuId/menu-items', function() {
           expect(menuItem.inventory).to.equal(newMenuItem.inventory);
           expect(menuItem.price).to.equal(newMenuItem.price);
           expect(menuItem.menu_id).to.equal(2);
+          done();
         });
       });
   });

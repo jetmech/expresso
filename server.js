@@ -7,8 +7,10 @@ const morgan = require('morgan');
 const PORT = process.env.PORT || 4000;
 
 const app = express();
+if (process.env.NODE_ENV == 'production') {
+  app.use(morgan('short'));
+}
 
-app.use(morgan('short'));
 app.use(cors());
 app.use(bodyParser.json());
 

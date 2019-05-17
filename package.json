@@ -4,9 +4,11 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "env TEST_DATABASE=./test/test.sqlite mocha --recursive",
+    "start": "env NODE_ENV=production node server.js",
+    "test": "mocha --recursive",
     "postinstall": "node migration.js",
-    "test-model": "env TEST_DATABASE=./test/test.sqlite mocha ./test/model/*-test.js"
+    "test-model": "mocha ./test/model/*-test.js",
+    "test-server": "mocha ./test/test.js"
   },
   "author": "",
   "license": "ISC",

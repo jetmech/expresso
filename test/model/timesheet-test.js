@@ -2,6 +2,7 @@
 
 const { assert } = require('chai');
 const sqlite3 = require('sqlite3');
+const { dbPath } = require('../../config');
 
 const Timesheet = require('../../models/timesheet');
 let timesheet = {};
@@ -17,7 +18,7 @@ const timesheetTemplate = {
   employeeId: 1,
 };
 
-const testDb = new sqlite3.Database(process.env.TEST_DATABASE);
+const testDb = new sqlite3.Database(dbPath);
 
 describe('Timesheet', function () {
 
