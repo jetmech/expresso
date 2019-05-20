@@ -4,7 +4,7 @@ const { assert } = require('chai');
 const sqlite3 = require('sqlite3');
 const { dbPath } = require('../../config');
 
-const MenuItem = require('../../models/menuItem');
+const MenuItem = require('../../lib/models/menuItem');
 let menuItem = {};
 let menuItems = [];
 
@@ -358,8 +358,6 @@ describe('MenuItem', function () {
 
   describe('#delete()', function () {
 
-    let deleteResult;
-
     beforeEach('populate the Menu table', function (done) {
       seed.seedMenuDatabase(done);
     });
@@ -372,8 +370,8 @@ describe('MenuItem', function () {
       menuItem = await MenuItem.get(1);
     });
 
-    beforeEach('Delete the menuItem', async function () {
-      deleteResult = await menuItem.delete();
+    beforeEach('Delete the menuItem', function (done) {
+      menuItem.delete().then(done);
     });
 
     it('deletes the menuItem from the database', function (done) {
@@ -402,10 +400,6 @@ describe('MenuItem', function () {
           done();
         }
       });
-    });
-
-    it('returns true after a successful delete', function () {
-      assert.isTrue(deleteResult);
     });
 
   });

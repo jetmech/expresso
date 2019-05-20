@@ -4,7 +4,7 @@ const { assert } = require('chai');
 const sqlite3 = require('sqlite3');
 const { dbPath } = require('../../config');
 
-const Timesheet = require('../../models/timesheet');
+const Timesheet = require('../../lib/models/timesheet');
 let timesheet = {};
 let timesheets = [];
 
@@ -342,8 +342,6 @@ describe('Timesheet', function () {
 
   describe('#delete()', function () {
 
-    let deleteResult;
-
     beforeEach('populute the employee table', function (done) {
       seed.seedEmployeeDatabase(done);
     });
@@ -356,8 +354,8 @@ describe('Timesheet', function () {
       timesheet = await Timesheet.get(1);
     });
 
-    beforeEach('Delete the timesheet', async function () {
-      deleteResult = await timesheet.delete();
+    beforeEach('Delete the timesheet', function (done) {
+      timesheet.delete().then(done);
     });
 
     it('deletes the timesheet from the database', function (done) {
@@ -386,10 +384,6 @@ describe('Timesheet', function () {
           done();
         }
       });
-    });
-
-    it('returns true after a successful delete', function () {
-      assert.isTrue(deleteResult);
     });
 
   });

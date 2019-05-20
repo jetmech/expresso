@@ -4,7 +4,7 @@ const { assert } = require('chai');
 const sqlite3 = require('sqlite3');
 const { dbPath } = require('../../config');
 
-const Menu = require('../../models/menu');
+const Menu = require('../../lib/models/menu');
 let menu = {};
 let menus = [];
 
@@ -82,14 +82,14 @@ describe('#title', function () {
   });
 });
 
-describe('.get()', function () {
+describe('.getById()', function () {
 
   beforeEach('populute the menu table', function (done) {
     seed.seedMenuDatabase(done);
   });
 
   beforeEach('get the menu', async function () {
-    menu = await Menu.get(1);
+    menu = await Menu.getById(1);
   });
 
   it('returns a Menu object', function () {
@@ -184,7 +184,7 @@ describe('#update()', function () {
   });
 
   beforeEach('Get a menu from the database', async function () {
-    menu = await Menu.get(1);
+    menu = await Menu.getById(1);
   });
 
   beforeEach('Update the menu', async function () {
@@ -223,18 +223,16 @@ describe('#update()', function () {
 
 describe('#delete()', function () {
 
-  let deleteResult;
-
   beforeEach('populute the menu table', function (done) {
     seed.seedMenuDatabase(done);
   });
 
   beforeEach('Get a menu from the database', async function () {
-    menu = await Menu.get(1);
+    menu = await Menu.getById(3);
   });
 
-  beforeEach('Delete the menu', async function () {
-    deleteResult = await menu.delete();
+  beforeEach('Delete the menu', function (done) {
+    menu.delete().then(done);
   });
 
   it('deletes the menu from the database', function (done) {
@@ -263,10 +261,6 @@ describe('#delete()', function () {
         done();
       }
     });
-  });
-
-  it('returns true after a successful delete', function () {
-    assert.isTrue(deleteResult);
   });
 
 });

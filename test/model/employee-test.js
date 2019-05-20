@@ -4,7 +4,7 @@ const { assert } = require('chai');
 const sqlite3 = require('sqlite3');
 const { dbPath } = require('../../config');
 
-const Employee = require('../../models/employee');
+const Employee = require('../../lib/models/employee');
 let employee = {};
 let employees = [];
 
